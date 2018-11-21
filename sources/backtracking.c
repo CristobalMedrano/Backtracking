@@ -3,6 +3,8 @@
 #include <structs.h>
 #include <backtracking.h>
 #include <menu.h>
+#include <readfile.h>
+#include <utilities.h>
 
 void initBacktracking()
 {
@@ -33,5 +35,10 @@ void initBacktracking()
 
 void runBacktracking()
 {
-
+    inv* currentInversion = getInversion();
+    #ifdef DEBUG
+        printf("Capital inicial: %d\n", currentInversion->initCapital);
+        printf("Inversiones disponibles: %d\n", currentInversion->availableInv);
+        showList(currentInversion->listInversion, (currentInversion->availableInv)*2);
+    #endif
 }

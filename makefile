@@ -21,12 +21,15 @@ ifeq ($(OS_detected), Windows)
 	EXECUTABLE = $(EXECUTABLE_NAME)$(EXTENSION)
 	EXECUTE = $(EXECUTABLE)
     REMOVE = -del
+	FILES = $(SOURCES)\*.o 
+
 endif
 ifeq ($(OS_detected), Linux)
 	EXTENSION = .out
 	EXECUTABLE = $(EXECUTABLE_NAME)$(EXTENSION)
 	EXECUTE = ./$(EXECUTABLE)
     REMOVE = -rm -f
+	FILES = $(SOURCES)/*.o 
 endif
 
 #Modules and headers folders.
@@ -75,7 +78,6 @@ $(SOURCES)/%_debug.o: $(SOURCES)/%.c
 
 .PHONY: clean
 clean:
-	$(REMOVE) $(SOURCES)\*.o
-	$(REMOVE) $(MAIN)
+	$(REMOVE) $(FILES) $(MAIN)
 	$(REMOVE) $(EXECUTABLE) debug_$(EXECUTABLE)
 	echo Full wipe.

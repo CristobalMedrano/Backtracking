@@ -1,0 +1,199 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <structs.h>
+#include <binarytree.h>
+
+btree* insertInversion(btree* currentTree, int cost, int utility)
+{
+	btree* newInversion = createInversion(cost, utility, NULL, NULL);
+	if (NULL == newInversion)
+	{
+		return newInversion;
+	}
+	if (getleftInversion(currentTree) == NULL && strcmp(obtenerResultsID(hoja),obtenerResultsID(resultID)) < 0)
+	{
+		resultID->hijoIzquierdo = hoja;
+		return resultID;
+	}
+	if (hijoDerechoResults(resultID) == NULL && strcmp(id,obtenerResultsID(resultID)) >= 0)
+	{
+		resultID->hijoDerecho = hoja;
+		return resultID;
+	}
+	if (strcmp(id,obtenerResultsID(resultID)) < 0)
+	{
+		resultID->hijoIzquierdo = insertarResultsID(hijoIzquierdoResults(resultID), id, titulo, autor);
+		return resultID;
+	}
+	else
+	{
+		resultID->hijoDerecho = insertarResultsID(hijoDerechoResults(resultID), id, titulo, autor);
+		return resultID;
+	}
+	return resultID;
+}
+
+btree* createInversion(int cost, int utility, btree* leftInversion, btree* rightInversion)
+{
+	btree* newInversion = (btree*)malloc(sizeof(btree)); 
+	if(NULL != newInversion)
+	{ 
+	    newInversion->cost = cost;
+	    newInversion->utility = utility;
+		newInversion->leftInversion = leftInversion;
+		newInversion->rightInversion = rightInversion;
+		return newInversion;
+	} 
+	printf("No es posible asignar memoria para createInversion()");
+	printf("Error in binarytree.c");
+	return NULL;
+}
+
+btree* getleftInversion(btree* currentTree)
+{
+	if (currentTree == NULL)
+	{
+		return NULL;
+	}
+	else
+	{
+		return currentTree->leftInversion;
+	}
+}
+
+/**
+	@brief Funcion
+	@param resultID
+	@retuns NULL
+	@retuns resultID->hijoDerecho
+	@retuns resultID
+*/
+
+IndexListID* hijoDerechoResults(IndexListID* resultID)
+{
+	if (resultID == NULL)
+	{
+		return NULL;
+	}
+	else
+	{
+		return resultID->hijoDerecho;
+	}
+	return resultID;
+}
+
+/**
+	@brief Funcion
+	@param resultID
+	@retuns NULL
+	@retuns resultID->id
+*/
+
+char* obtenerResultsID(IndexListID* resultID)
+{
+	if (resultID == NULL)
+	{
+		return NULL;
+	}
+	else
+	{
+		return resultID->id;
+	}
+}
+
+/**
+	@brief Funcion
+	@param resultID
+	@param id
+	@retuns indice
+	@retuns NULL
+*/
+
+IndexListID* buscarResultsID(IndexListID* resultID, char* id)
+{
+	IndexListID* indice = resultID;
+	while (indice != NULL)
+	{
+		char* palabraActual = obtenerResultsID(indice);
+		if (strcmp(id, palabraActual) == 0)
+		{
+			return indice;
+		}
+		if (strcmp(id, palabraActual) < 0)
+		{
+			indice = hijoIzquierdoResults(indice);
+		}
+		else
+		{
+			indice = hijoDerechoResults(indice);
+		}
+	}
+	return NULL;
+}
+
+/**
+	@brief Funcion
+	@param resultID
+*/
+
+void inOrdenResults(IndexListID* resultID)
+{
+	if (resultID != NULL)
+	{ 
+	inOrdenResults(resultID->hijoIzquierdo);
+	printf("%s\n", resultID->id);
+	MostrarTitulo(resultID->titulo);
+	MostrarAutor(resultID->autor);
+ 	inOrdenResults(resultID->hijoDerecho);
+ 	}
+}
+
+/**
+	@brief Funcion
+	@param index
+	@retuns NULL
+	@retuns index->id
+*/
+
+char* obtenerIDdesdeIndex(IndexListID* index)
+{
+	if (index == NULL)
+	{
+		return NULL;
+	}
+	else
+	{
+		return index->id;
+	}
+}
+
+/**
+	@brief Funcion
+	@param index
+	@param id
+	@retuns indice
+	@retuns NULL
+*/
+
+IndexListID* obtenerIndexID(IndexListID* index, char* id)
+{
+	IndexListID* indice = index;
+	while (indice != NULL)
+	{
+		char* palabraActual = obtenerIDdesdeIndex(indice);
+		if (strcmp(id, palabraActual) == 0)
+		{
+			return indice;
+		}
+		if (strcmp(id, palabraActual) < 0)
+		{
+			indice = hijoIzquierdoResults(indice);
+		}
+		else
+		{
+			indice = hijoDerechoResults(indice);
+		}
+	}
+	return NULL;
+}

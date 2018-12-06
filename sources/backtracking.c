@@ -1,9 +1,11 @@
 #include <stdio.h>
-#include <stdalign.h>
+#include <stdlib.h>
+#include <math.h>
 #include <structs.h>
 #include <backtracking.h>
 #include <menu.h>
 #include <readfile.h>
+#include <binarytree.h>
 #include <utilities.h>
 
 void initBacktracking()
@@ -41,4 +43,36 @@ void runBacktracking()
         printf("Inversiones disponibles: %d\n", currentInversion->availableInv);
         showList(currentInversion->listInversion, (currentInversion->availableInv)*2);
     #endif
+    
+    btree* decisionTree = createDecisionTree(currentInversion);
+    #ifdef DEBUG
+        preOrder(decisionTree);
+    #endif
+    free(currentInversion->listInversion);
+    free(currentInversion);
+}
+
+btree* createDecisionTree(inv* currentInversion)
+{
+    btree* decisionTree = NULL;
+    int i = 0;
+    int j = 0;
+    int currentCost = 0;
+    int currentUtility = 0;
+
+    decisionTree = insertInversion(decisionTree, 0, 0);
+    while(j < currentInversion->availableInv)
+    {
+        currentCost = currentInversion->listInversion[i];
+        currentUtility = currentInversion->listInversion[i+1];
+        decisionTree = insertInversion(decisionTree, currentCost, currentUtility);
+        i = i + 2;
+        j++;
+    }
+    return decisionTree;
+}
+
+void backtracking()
+{
+    
 }

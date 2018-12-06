@@ -20,6 +20,7 @@ ifeq ($(OS_detected), Windows)
 	EXTENSION = .exe
 	EXECUTABLE = $(EXECUTABLE_NAME)$(EXTENSION)
 	EXECUTE = $(EXECUTABLE)
+	DEBUGEXECUTE = debug_$(EXECUTABLE)
     REMOVE = -del
 	FILES = $(SOURCES)\*.o 
 
@@ -28,6 +29,7 @@ ifeq ($(OS_detected), Linux)
 	EXTENSION = .out
 	EXECUTABLE = $(EXECUTABLE_NAME)$(EXTENSION)
 	EXECUTE = ./$(EXECUTABLE)
+	DEBUGEXECUTE = ./debug_$(EXECUTABLE)
     REMOVE = -rm -f
 	FILES = $(SOURCES)/*.o 
 endif
@@ -59,13 +61,13 @@ execute: $(EXECUTABLE)
 
 $(EXECUTABLE): $(OBJS) $(MAIN)
 	$(CC) -o $@ $^ 
-	echo Compilation done. Executable: $(EXECUTABLE)
+	echo Compilation done. Executable: $(EXECUTE)
 
 debug: debug_$(EXECUTABLE)
 
 debug_$(EXECUTABLE): $(DOBJS) $(MAIN)
 	$(CC) -o $@ $^ 
-	echo Compilation done. Executable: debug_$(EXECUTABLE)
+	echo Compilation done. Executable: $(DEBUGEXECUTE)
 
 $(SOURCES)/%.o: $(SOURCES)/%.c
 	$(CC) $(OPTS) -c -o $@ $<

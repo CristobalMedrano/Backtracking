@@ -93,3 +93,25 @@ void preOrder(btree* currentInversion)
 		preOrder(currentInversion->rightInversion);
  	}
 }
+
+void postOrder(btree* currentInversion)
+{
+	if (currentInversion != NULL)
+	{ 
+		postOrder(currentInversion->leftInversion);
+		postOrder(currentInversion->rightInversion);
+		printf("%d\n", currentInversion->cost);
+		
+ 	}
+}
+
+void freeTree(btree* decisionTree)
+{
+	if (decisionTree != NULL)
+	{ 
+		freeTree(decisionTree->leftInversion);
+		freeTree(decisionTree->rightInversion);
+		free(decisionTree);
+		
+ 	}
+}

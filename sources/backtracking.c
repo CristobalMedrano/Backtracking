@@ -48,8 +48,8 @@ void runBacktracking()
     #ifdef DEBUG
         preOrder(decisionTree);
     #endif
-    free(currentInversion->listInversion);
-    free(currentInversion);
+    freeTree(decisionTree);
+    freeInversion(currentInversion);
 }
 
 btree* createDecisionTree(inv* currentInversion)

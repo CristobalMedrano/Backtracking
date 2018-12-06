@@ -1,4 +1,4 @@
-#Version 0.5 - 11-11-2018
+#Version 0.5.1 - 06-12-2018
 #Makefile for Windows and Linux developed by Cristobal Medrano Alvarado.
 #Makefile para Windows y Linux desarrollado por Cristobal Medrano Alvardo.
 

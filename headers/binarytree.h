@@ -12,7 +12,9 @@ btree* getrightInversion(btree* currentInversion);
 int getStatusInversion(btree* currentInversion);
 void inOrder(btree* currentInversion);
 void preOrder(btree* currentInversion);
+void postOrder(btree* currentInversion);
 
+void freeTree(btree* decisionTree);
 
 
 #endif

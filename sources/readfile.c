@@ -165,6 +165,16 @@ inv* getInversion()
     return NULL;
 }
 
+void freeInversion(inv* inversion)
+{
+    if (NULL != inversion) 
+    {
+        free(inversion->listInversion);
+        free(inversion);
+    }
+    
+}
+
 /*
 void saveFile(travel* currentTravel, char* fileName, int n)
 {

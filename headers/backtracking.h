@@ -11,7 +11,7 @@
 
 void initBacktracking();
 void runBacktracking();
-void backtracking();
+//void backtracking();
 btree* createDecisionTree(inv* currentInversion);
 void printCurrent();
 

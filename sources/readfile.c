@@ -172,7 +172,6 @@ void freeInversion(inv* inversion)
         free(inversion->listInversion);
         free(inversion);
     }
-    
 }
 
 /*

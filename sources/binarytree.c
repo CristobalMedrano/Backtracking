@@ -3,12 +3,13 @@
 #include <structs.h>
 #include <binarytree.h>
 
-btree* insertInversion(btree* currentInversion, int cost, int utility)
+#define CAPITAL 1400000
+
+btree* backtracking(btree* currentInversion, int cost, int utility, int capital)
 {
-	btree* newInversion = NULL;
 	if (NULL == currentInversion)
 	{
-		newInversion = createDecisionInversion(cost, utility, NULL, NULL);
+		btree* newInversion = createDecisionInversion(cost, utility, NULL, NULL);
 		return newInversion;
 	}
 
@@ -19,17 +20,31 @@ btree* insertInversion(btree* currentInversion, int cost, int utility)
 
 	if(NULL == getleftInversion(currentInversion) && NULL == getrightInversion(currentInversion))
 	{
+		// Dont invest
 		newCost = currentCost;
 		newUtilty = currentUtility;
 		currentInversion->leftInversion = createDecisionInversion(newCost, newUtilty, NULL, NULL);
 
+		// Do invest
 		newCost = currentCost + cost;
 		newUtilty = currentUtility + utility;
-		currentInversion->rightInversion = createDecisionInversion(newCost, newUtilty, NULL, NULL);
+		if (canInvest(newCost, capital) == YES) 
+		{
+			currentInversion->rightInversion = createDecisionInversion(newCost, newUtilty, NULL, NULL);
+		}
 		return currentInversion;
 	}
-	currentInversion->leftInversion = insertInversion(getleftInversion(currentInversion), cost, utility);
-	currentInversion->rightInversion = insertInversion(getrightInversion(currentInversion), cost, utility);
+	
+	// Esto evita que se generen resultados erroneos, si ya se descarto la rama, no la vuelvo a generar.
+	if (NULL != getleftInversion(currentInversion))
+	{
+		currentInversion->leftInversion = backtracking(getleftInversion(currentInversion), cost, utility, capital);
+	}
+	
+	if(NULL != getrightInversion(currentInversion))
+	{
+		currentInversion->rightInversion = backtracking(getrightInversion(currentInversion), cost, utility, capital);
+	}
 	return currentInversion;
 }
 
@@ -47,6 +62,15 @@ btree* createDecisionInversion(int cost, int utility, btree* leftInversion, btre
 	printf("No es posible asignar memoria para createDecisionInversion()");
 	printf("Error in binarytree.c");
 	return NULL;
+}
+
+int canInvest(int currentCost, int currentCapital)
+{
+	if (currentCost > currentCapital) 
+	{
+		return NO;
+	}
+	return YES;	
 }
 
 btree* getleftInversion(btree* currentTree)
@@ -88,7 +112,7 @@ void preOrder(btree* currentInversion)
 {
 	if (currentInversion != NULL)
 	{ 
-		printf("%d\n", currentInversion->cost);
+		printf("Cost: %d, Utility: %d\n", currentInversion->cost, currentInversion->utility);
 		preOrder(currentInversion->leftInversion);
 		preOrder(currentInversion->rightInversion);
  	}
@@ -113,5 +137,15 @@ void freeTree(btree* decisionTree)
 		freeTree(decisionTree->rightInversion);
 		free(decisionTree);
 		
+ 	}
+}
+
+void backTrack(btree* currentInversion)
+{
+	if (currentInversion != NULL)
+	{ 
+		printf("%d\n", currentInversion->cost);
+		preOrder(currentInversion->leftInversion);
+		preOrder(currentInversion->rightInversion);
  	}
 }

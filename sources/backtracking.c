@@ -59,20 +59,17 @@ btree* createDecisionTree(inv* currentInversion)
     int j = 0;
     int currentCost = 0;
     int currentUtility = 0;
+    int currentCapital = currentInversion->initCapital;
+    int availableInversions = currentInversion->availableInv;
 
-    decisionTree = insertInversion(decisionTree, 0, 0);
-    while(j < currentInversion->availableInv)
+    decisionTree = backtracking(decisionTree, 0, 0, currentCapital);
+    while(j < availableInversions)
     {
         currentCost = currentInversion->listInversion[i];
         currentUtility = currentInversion->listInversion[i+1];
-        decisionTree = insertInversion(decisionTree, currentCost, currentUtility);
+        decisionTree = backtracking(decisionTree, currentCost, currentUtility, currentCapital);
         i = i + 2;
         j++;
     }
     return decisionTree;
-}
-
-void backtracking()
-{
-    
 }

@@ -5,10 +5,11 @@
 #define NO 0
 #define INVALID -1
 #define START 2
-btree* insertInversion(btree* currentInversion, int cost, int utility);
+btree* backtracking(btree* currentInversion, int cost, int utility, int capital);
 btree* createDecisionInversion(int cost, int utility, btree* leftInversion, btree* rightInversion);
 btree* getleftInversion(btree* currentInversion);
 btree* getrightInversion(btree* currentInversion);
+int canInvest(int currentCost, int currentCapital);
 int getStatusInversion(btree* currentInversion);
 void inOrder(btree* currentInversion);
 void preOrder(btree* currentInversion);

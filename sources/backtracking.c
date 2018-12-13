@@ -56,20 +56,45 @@ btree* createDecisionTree(inv* currentInversion)
 {
     btree* decisionTree = NULL;
     int i = 0;
-    int j = 0;
+    int level = 0;
     int currentCost = 0;
     int currentUtility = 0;
-    int currentCapital = currentInversion->initCapital;
+    int capital = currentInversion->initCapital;
     int availableInversions = currentInversion->availableInv;
+    invHistory* solution = createInvHistory();
 
-    decisionTree = backtracking(decisionTree, 0, 0, currentCapital);
-    while(j < availableInversions)
+    decisionTree = backtracking(decisionTree, 0, 0, capital, 0, availableInversions, &solution);
+    level++;
+    while(level <= availableInversions)
     {
         currentCost = currentInversion->listInversion[i];
         currentUtility = currentInversion->listInversion[i+1];
-        decisionTree = backtracking(decisionTree, currentCost, currentUtility, currentCapital);
+        decisionTree = backtracking(decisionTree, currentCost, currentUtility, capital, level, availableInversions, &solution);
         i = i + 2;
-        j++;
+        level++;
     }
+    
+    
+    if (NULL!= solution) {
+          
+    printf("ut: %d, capital usado: %d\n", solution->utility, solution->capital);
+    
+    if (solution->length == 0) 
+    {
+        printf("No hay inversiones realizadas");
+    }
+    
+    showList(solution->details, solution->length);
+
+    free(solution->details);
+    free(solution);
+    }
+  
+    /*
+    for(int k = 0; k < availableInversions; k++)
+    {
+        printf(" %d-%d\n", bestListInversion[k], bestListInversion[k+1]);
+    }*/
+    
     return decisionTree;
 }

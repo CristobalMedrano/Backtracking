@@ -42,15 +42,29 @@ void showMatrix(int n, int m, int** matrix)
     }   
 }
 
-int* createList(int n)
+int* createList(int length)
 {
-    int* newList = (int*)calloc(sizeof(int), n);
+    int* newList = (int*)calloc(length, sizeof(int));
     
     if (NULL != newList) 
     {
         return newList;
     }
     return NULL;
+}
+
+int* insertData(int* list, int length, int data)
+{
+    if (length >= 0) 
+    {
+        list = (int*)realloc(list, sizeof(int)*(length+1));
+        if (NULL != list) 
+        {
+            list[length] = data;
+            return list;
+        }    
+    }  
+    return list;
 }
 
 void showList(int* list, int n)

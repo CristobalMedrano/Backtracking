@@ -3,6 +3,7 @@
 #include <structs.h>
 #include <backtracking.h>
 
+// Funcion principal.
 int main(int argc, char const *argv[])
 {
     initBacktracking();

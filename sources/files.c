@@ -5,6 +5,7 @@
 #include <files.h>
 #include <utilities.h>
 
+// Obtiene el nombre del archivo ingresado por pantalla.
 char* getFileName()
 {
     printf("Ingrese el nombre del archivo: ");
@@ -24,6 +25,7 @@ char* getFileName()
     return NULL;
 }
 
+// Abre un archivo.
 FILE* openFile(char* fileName)
 {
     FILE* currentFile = fopen(fileName, "rb");
@@ -38,6 +40,8 @@ FILE* openFile(char* fileName)
     return NULL;
 }
 
+// Lee el archivo de entrada y guarda los datos en la estructura inv.(ver structs.h para mas detalles)
+// El formato a leer es: Capital disponible, numero de inversiones y cada inversion con su coste/utilidad.
 inv* readFile(FILE* currentFile)
 {
     if(NULL != currentFile)
@@ -74,6 +78,7 @@ inv* readFile(FILE* currentFile)
     return NULL;
 }
 
+// Inicia un puntero de inversion.
 inv* createInversion()
 {
     inv* newInv = (inv*)malloc(sizeof(inv));
@@ -89,6 +94,7 @@ inv* createInversion()
     return NULL;
 }
 
+// Guarda una inversion en la lista, las posiciones pares son los costos y las impares la utilidad.
 int* setListInversion(int* currentList, int pos, int cost, int utility)
 {
     if (NULL != currentList && pos >= 0) 
@@ -100,6 +106,7 @@ int* setListInversion(int* currentList, int pos, int cost, int utility)
     return currentList;
 }
 
+// Guarda la nueva inversion.
 inv* setNewInversion(inv* currentInversion, int initCapital, int availableInv, int* listInversion)
 {
     if (NULL != currentInversion) 
@@ -112,7 +119,7 @@ inv* setNewInversion(inv* currentInversion, int initCapital, int availableInv, i
     return currentInversion;
 }
 
-
+// Cierra un archivo.
 int closeFile(FILE* file, char* fileName)
 {
     if (NULL != file && NULL != fileName) 
@@ -128,7 +135,13 @@ int closeFile(FILE* file, char* fileName)
     printf("Error al cerrar el archivo '%s'.\n", fileName);
     return ERROR_CLOSE;
 }
-
+/*
+    Entrada: Vacia
+    Procedimiento: Inicia la lectura del archivo
+    Salida: Estructura de datos que contiene el capital inicial,
+            el numero de inversiones y la lista de inversiones a
+            realizar con sus respectivas utilidades.
+*/
 inv* getInversion()
 {
     char* fileName = getFileName();
@@ -165,6 +178,7 @@ inv* getInversion()
     return NULL;
 }
 
+// Libera la memoria usada por la inversion
 void freeInversion(inv* inversion)
 {
     if (NULL != inversion) 
@@ -174,6 +188,8 @@ void freeInversion(inv* inversion)
     }
 }
 
+// Guarda los datos obtenidos previamente por invHistory en un archivo de salida
+// El formato es: Capital usado - Utilidad total obtenida y la lista de inversiones que se realizaron.
 void saveFile(invHistory* solution)
 {
     if (NULL != solution) 

@@ -18,7 +18,7 @@ void showMenu()
     #ifndef DEBUG
     printf("*         Clover Inversions        *\n");
     #endif
-    printf("*            Version 0.0           *\n");
+    printf("*            Version 1.0           *\n");
     printf("**                                **\n");
     printf("***------------------------------***\n");
     printf("\n");
@@ -67,7 +67,7 @@ void pressToContinue()
 void about()
 {
 	cleanScreen();
-    printf("Clover Inversions (Lab 2: Backtracking - Algoritmos Avanzados).\n\n");
+    printf("Clover Inversions (Lab 2: Backtracking - Algoritmos Avanzados 2/2018).\n\n");
     printf("Nombre: Cristobal Nicolas Medrano Alvarado.\n");
     printf("Rut: 19.083.864-1\n");
     printf("Correo: cristobal.medrano@usach.cl\n");

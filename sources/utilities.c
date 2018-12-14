@@ -3,6 +3,7 @@
 #include <structs.h>
 #include <utilities.h>
 
+// Funciones utilitarias basicas, que aportan al desarrollo de la solucion.
 int** createMatrix(int n, int m)
 {
     int i = 0;

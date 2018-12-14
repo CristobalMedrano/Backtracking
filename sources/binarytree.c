@@ -4,6 +4,9 @@
 #include <binarytree.h>
 #include <utilities.h>
 
+/*
+	Crea un nodo de inversion.
+*/
 btree* createDecisionInversion(int status, int level, int currentCost, int currentUtility, int cost, int utility, btree* previousInversion, btree* leftInversion, btree* rightInversion)
 {
 	btree* newInversion = (btree*)malloc(sizeof(btree)); 
@@ -25,6 +28,7 @@ btree* createDecisionInversion(int status, int level, int currentCost, int curre
 	return NULL;
 }
 
+// Obtiene la inversion de la izquierda
 btree* getleftInversion(btree* currentTree)
 {
 	if (currentTree == NULL)
@@ -37,6 +41,7 @@ btree* getleftInversion(btree* currentTree)
 	}
 }
 
+// Obtiene la inversion de la derecha.
 btree* getrightInversion(btree* currentTree)
 {
 	if (currentTree == NULL)
@@ -49,6 +54,7 @@ btree* getrightInversion(btree* currentTree)
 	}
 }
 
+// Recorrido en in orden
 void inOrder(btree* currentInversion)
 {
 	if (currentInversion != NULL)
@@ -60,6 +66,7 @@ void inOrder(btree* currentInversion)
  	}
 }
 
+// Recorrido en pre orden
 void preOrder(btree* currentInversion)
 {
 	if (currentInversion != NULL)
@@ -70,6 +77,7 @@ void preOrder(btree* currentInversion)
  	}
 }
 
+// Recorrido en post orden
 void postOrder(btree* currentInversion)
 {
 	if (currentInversion != NULL)
@@ -81,6 +89,7 @@ void postOrder(btree* currentInversion)
  	}
 }
 
+// Libera la memoria de un arbol de decision.
 void freeTree(btree* decisionTree)
 {
 	if (decisionTree != NULL)

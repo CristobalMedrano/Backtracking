@@ -18,7 +18,7 @@ void initBacktracking()
  
         switch(option)
         {
-            case BRUTE_FORCE:
+            case BACKTRACKING:
                 runBacktracking();
                 pressToContinue();
                 break;
@@ -37,44 +37,78 @@ void initBacktracking()
 
 void runBacktracking()
 {
+    // Read file
     inv* currentInversion = getInversion();
-    #ifdef DEBUG
-        printf("Capital inicial: %d\n", currentInversion->initCapital);
-        printf("Inversiones disponibles: %d\n", currentInversion->availableInv);
-        showList(currentInversion->listInversion, (currentInversion->availableInv)*2);
-    #endif
     
-    btree* decisionTree = createDecisionTree(currentInversion);
-    #ifdef DEBUG
-        preOrder(decisionTree);
-    #endif
-    freeTree(decisionTree);
-    freeInversion(currentInversion);
-}
-
-btree* createDecisionTree(inv* currentInversion)
-{
-    btree* decisionTree = NULL;
-    int i = 0;
-    int level = 0;
-    int currentCost = 0;
-    int currentUtility = 0;
-    int capital = currentInversion->initCapital;
-    int availableInversions = currentInversion->availableInv;
-    invHistory* solution = createInvHistory();
-
-    decisionTree = backtracking(decisionTree, 0, 0, capital, 0, availableInversions, &solution);
-    level++;
-    while(level <= availableInversions)
+    if (NULL != currentInversion) 
     {
-        currentCost = currentInversion->listInversion[i];
-        currentUtility = currentInversion->listInversion[i+1];
-        decisionTree = backtracking(decisionTree, currentCost, currentUtility, capital, level, availableInversions, &solution);
-        i = i + 2;
-        level++;
+        #ifdef DEBUG
+            printf("Capital inicial: %d\n", currentInversion->initCapital);
+            printf("Inversiones disponibles: %d\n", currentInversion->availableInv);
+        #endif
+        
+        invHistory* solution = getBestInversions(currentInversion);
+        
+        if (NULL != solution) 
+        {
+            // Save file
+            
+            if (NULL != solution->details) 
+            {
+                showList(solution->details, solution->length);
+                free(solution->details);
+            }
+            free(solution);
+        }
+        freeInversion(currentInversion);
     }
     
     
+}
+
+invHistory* getBestInversions(inv* currentInversion)
+{
+    if(NULL != currentInversion)
+    {
+        invHistory* solution    = NULL;
+        btree* inversionTree    = NULL;
+        int capital             = currentInversion->initCapital;
+        int availableInversions = currentInversion->availableInv;
+        int inversionCost       = 0;
+        int inversionUtility    = 0;
+        int i                   = 0;
+        int level               = 0;
+
+        solution = createInvHistory();
+        if (NULL != solution) 
+        {
+            inversionTree = backtracking(inversionTree, 0, 0, capital, 0, availableInversions, &solution);
+            level++;
+
+            while(level <= availableInversions)
+            {
+                inversionCost       = currentInversion->listInversion[i];
+                inversionUtility    = currentInversion->listInversion[i+1];
+                inversionTree       = backtracking(inversionTree, inversionCost, inversionUtility, capital, level, availableInversions, &solution);
+                i                   = i + 2;
+                level++;
+            }
+            
+            if (NULL != inversionTree) 
+            {
+                freeTree(inversionTree);
+            }
+            return solution;   
+        }
+        else
+        {
+            return NULL;
+        }       
+    }
+    return NULL;
+    
+    
+    /*
     if (NULL!= solution) {
           
     printf("ut: %d, capital usado: %d\n", solution->utility, solution->capital);
@@ -85,16 +119,136 @@ btree* createDecisionTree(inv* currentInversion)
     }
     
     showList(solution->details, solution->length);
-
     free(solution->details);
     free(solution);
     }
-  
+  */
     /*
     for(int k = 0; k < availableInversions; k++)
     {
         printf(" %d-%d\n", bestListInversion[k], bestListInversion[k+1]);
     }*/
-    
-    return decisionTree;
+}
+
+invHistory* createInvHistory()
+{
+	invHistory* newInvHistory = (invHistory*)malloc(sizeof(invHistory));
+
+	if (NULL != newInvHistory) 
+	{
+		newInvHistory->capital	= 0;
+		newInvHistory->utility	= 0;
+		newInvHistory->length 	= 0;
+		newInvHistory->details 	= NULL;
+		return newInvHistory;
+	}
+	printf("No es posible asignar memoria para createInvHistory()");
+	printf("Error in backtracking.c");
+	return NULL;
+}
+
+btree* backtracking(btree* currentInversion, int cost, int utility, int capital, int level, int maxLevel, invHistory** solution)
+{
+	if (NULL == currentInversion)
+	{
+		btree* newInversion = createDecisionInversion(START, level, cost, utility, cost, utility, NULL, NULL, NULL);
+		return newInversion;
+	}
+
+	int currentCost = currentInversion->currentCost;
+	int currentUtility = currentInversion->currentUtility;
+	int newCost = 0;
+	int newUtility = 0;
+
+	if(NULL == getleftInversion(currentInversion) && NULL == getrightInversion(currentInversion))
+	{
+		// Dont invest
+		newCost = currentCost;
+		newUtility = currentUtility;
+		currentInversion->leftInversion = createDecisionInversion(NO, level, newCost, newUtility, cost, utility, currentInversion, NULL, NULL);
+		
+		if(level == maxLevel)
+		{
+			*solution = updateSolution(*solution, currentInversion->leftInversion);
+		}
+		
+		// Do invest
+		newCost = currentCost + cost;
+		if (canInvest(newCost, capital) == YES) 
+		{
+			newUtility = currentUtility + utility;
+			currentInversion->rightInversion = createDecisionInversion(YES, level, newCost, newUtility, cost, utility, currentInversion, NULL, NULL);
+			
+			if(level == maxLevel)
+			{
+				*solution = updateSolution(*solution, currentInversion->rightInversion);
+			}
+		}		
+		return currentInversion;
+	}
+	
+	// Esto evita que se generen resultados erroneos, si ya se descarto la rama, no la vuelvo a generar.
+	if (NULL != getleftInversion(currentInversion))
+	{
+		currentInversion->leftInversion = backtracking(getleftInversion(currentInversion), cost, utility, capital, level, maxLevel, solution);
+	}
+	
+	if(NULL != getrightInversion(currentInversion))
+	{
+		currentInversion->rightInversion = backtracking(getrightInversion(currentInversion), cost, utility, capital, level, maxLevel, solution);
+	}
+	return currentInversion;
+}
+
+int canInvest(int currentCost, int currentCapital)
+{
+	if (currentCost > currentCapital) 
+	{
+		return NO;
+	}
+	return YES;	
+}
+
+invHistory* updateSolution(invHistory* solution, btree* currentInversion)
+{
+	int newUtility = currentInversion->currentUtility;
+	if (newUtility > solution->utility) 
+	{
+		if (NULL != solution) 
+		{
+			free(solution->details);
+		}
+		solution = inversionHistory(solution, currentInversion);
+	}
+	return solution;
+}
+
+invHistory* inversionHistory(invHistory* solution, btree* currentInversion)
+{
+    if (NULL == solution && NULL == currentInversion) 
+	{
+		return NULL;
+	}
+
+	btree* inversion    = currentInversion;
+    int currentUtility  = inversion->currentUtility;
+	int capital         = inversion->currentCost;
+    solution->capital   = capital;
+	solution->utility   = currentUtility;
+	int* listInversion  = NULL;
+	int length          = 0;
+
+	while(NULL != inversion)
+	{
+		if(YES == inversion->status)
+		{
+			listInversion = insertData(listInversion, length, inversion->cost);
+			length++;
+		}
+		inversion = inversion->previousInversion;
+	}
+	solution->length = length;
+	solution->details = listInversion;
+
+	return solution;
 }

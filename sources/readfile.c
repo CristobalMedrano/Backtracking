@@ -79,9 +79,9 @@ inv* createInversion()
     inv* newInv = (inv*)malloc(sizeof(inv));
     if(NULL != newInv)
     {
-        newInv->initCapital = 0;
-        newInv->availableInv = 0;
-        newInv->listInversion = NULL;
+        newInv->initCapital     = 0;
+        newInv->availableInv    = 0;
+        newInv->listInversion   = NULL;
         return newInv;
     }
     printf("Memoria insuficiente: createInversion()\n");

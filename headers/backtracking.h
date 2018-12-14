@@ -2,7 +2,7 @@
 #define _BACKTRACKING_H
 
 #define SIN_INGRESO -1
-#define BRUTE_FORCE 1
+#define BACKTRACKING 1
 #define ABOUT 2
 #define EXIT 3
 #define START 2
@@ -11,8 +11,15 @@
 
 void initBacktracking();
 void runBacktracking();
-//void backtracking();
-btree* createDecisionTree(inv* currentInversion);
+invHistory* getBestInversions(inv* currentInversion);
+invHistory* createInvHistory();
+
+btree* backtracking(btree* currentInversion, int cost, int utility, int capital, int level, int maxLevel, invHistory** solution);
 void printCurrent();
+
+int canInvest(int currentCost, int currentCapital);
+invHistory* updateSolution(invHistory* solution, btree* currentInversion);
+invHistory* inversionHistory(invHistory* solution, btree* currentInversion);
+
 
 #endif

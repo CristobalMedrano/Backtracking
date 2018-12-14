@@ -23,8 +23,8 @@ btree* createDecisionInversion(int status, int level, int currentCost, int curre
 		newInversion->rightInversion 	= rightInversion;
 		return newInversion;
 	} 
-	printf("No es posible asignar memoria para createDecisionInversion()");
-	printf("Error in binarytree.c");
+	printf("No es posible asignar memoria para createDecisionInversion()\n");
+	printf("Error in binarytree.c\n");
 	return NULL;
 }
 

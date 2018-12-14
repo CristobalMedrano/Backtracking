@@ -1,5 +1,5 @@
-#ifndef _READ_FILE_H
-#define _READ_FILE_H
+#ifndef _FILES_H
+#define _FILES_H
 
 /*
     Funciones de lectura.
@@ -7,6 +7,8 @@
 */
 #define SUCCESS 0
 #define ERROR_CLOSE -1
+#define SAVED 1
+#define ERROR 2
 
 char* getFileName();
 FILE* openFile(char* fileName);
@@ -17,5 +19,6 @@ inv* setNewInversion(inv* currentInversion, int initCapital, int availableInv, i
 int closeFile(FILE* file, char* fileName);
 inv* getInversion();
 void freeInversion(inv* inversion);
+void saveFile(invHistory* solution);
 
 #endif

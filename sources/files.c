@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <structs.h>
-#include <readfile.h>
+#include <files.h>
 #include <utilities.h>
 
 char* getFileName()
@@ -174,32 +174,32 @@ void freeInversion(inv* inversion)
     }
 }
 
-/*
-void saveFile(travel* currentTravel, char* fileName, int n)
+void saveFile(invHistory* solution)
 {
-    FILE* newFile = openFile(fileName, "wb");
-    if (NULL != newFile) 
+    if (NULL != solution) 
     {
-        fprintf(newFile, "%d\n", currentTravel->cost);
-        int i;
-        
-        fprintf(newFile, "0-");
-        for(i = 0; i < n; i++)
-        {   
-            if (i < n - 1) {
-                fprintf(newFile, "%d-", currentTravel->route[i]+1);
-            }
+        FILE* newFile = fopen("Salida.out", "wb");
+
+        if (NULL != newFile) 
+        {
+            fprintf(newFile, "%d ", solution->capital);
+            fprintf(newFile, "%d\n", solution->utility);
             
-            if (i == (n - 1))
+            
+            if (NULL != solution->details) 
             {
-                fprintf(newFile, "%d", currentTravel->route[i]+1);
-                fprintf(newFile, "-0");
+                int i = 0;
+                for(i = 0; i < solution->length; i++)
+                {
+                    fprintf(newFile, "%d\n", solution->details[i]);
+                }
             }
-           
-        }
-        printf("Archivo solucion creado correctamente.\n");      
-        closeFile(newFile, fileName);  
+            else
+            {
+                fprintf(newFile, "No es posible invertir.");
+            }
+            printf("Archivo solucion creado correctamente.\n");      
+            closeFile(newFile, "Salida.out"); 
+        } 
     }
-    
 }
-*/

@@ -4,7 +4,7 @@
 #include <structs.h>
 #include <backtracking.h>
 #include <menu.h>
-#include <readfile.h>
+#include <files.h>
 #include <binarytree.h>
 #include <utilities.h>
 
@@ -50,20 +50,21 @@ void runBacktracking()
         invHistory* solution = getBestInversions(currentInversion);
         
         if (NULL != solution) 
-        {
-            // Save file
-            
+        {   
+            saveFile(solution);       
+
             if (NULL != solution->details) 
             {
-                showList(solution->details, solution->length);
+                #ifdef DEBUG
+                    printf("capital usado: %d, ut: %d\n", solution->utility, solution->capital);
+                    showList(solution->details, solution->length);
+                #endif
                 free(solution->details);
             }
             free(solution);
         }
         freeInversion(currentInversion);
     }
-    
-    
 }
 
 invHistory* getBestInversions(inv* currentInversion)

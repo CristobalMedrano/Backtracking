@@ -152,6 +152,9 @@ btree* backtracking(btree* currentInversion, int cost, int utility, int capital,
 	if (NULL == currentInversion)
 	{
 		btree* newInversion = createDecisionInversion(START, level, cost, utility, cost, utility, NULL, NULL, NULL);
+        #ifdef DEBUG
+            printCurrent(newInversion);
+        #endif
 		return newInversion;
 	}
 
@@ -167,7 +170,9 @@ btree* backtracking(btree* currentInversion, int cost, int utility, int capital,
 		newUtility = currentUtility;
 		currentInversion->leftInversion = createDecisionInversion(NO, level, newCost, newUtility, cost, utility, currentInversion, NULL, NULL);
 		
-		if(level == maxLevel)
+        printCurrent(currentInversion->leftInversion);
+		
+        if(level == maxLevel)
 		{
 			*solution = updateSolution(*solution, currentInversion->leftInversion);
 		}
@@ -179,6 +184,8 @@ btree* backtracking(btree* currentInversion, int cost, int utility, int capital,
 			newUtility = currentUtility + utility;
 			currentInversion->rightInversion = createDecisionInversion(YES, level, newCost, newUtility, cost, utility, currentInversion, NULL, NULL);
 			
+            printCurrent(currentInversion->rightInversion);
+
 			if(level == maxLevel)
 			{
 				*solution = updateSolution(*solution, currentInversion->rightInversion);
@@ -198,6 +205,31 @@ btree* backtracking(btree* currentInversion, int cost, int utility, int capital,
 		currentInversion->rightInversion = backtracking(getrightInversion(currentInversion), cost, utility, capital, level, maxLevel, solution);
 	}
 	return currentInversion;
+}
+
+void printCurrent(btree* currentInversion)
+{
+    if (NULL != currentInversion) 
+    {
+        #ifdef DEBUG
+            
+            if (YES == currentInversion->status) 
+            {
+                printf("Invertir: Si\n");
+            }
+            else
+            {
+                printf("Invertir: No\n");
+            }
+            printf("Nivel: %d\n", currentInversion->level);
+            printf("Capital invertido: %d\n", currentInversion->currentCost);
+            printf("Utilidad acumulada: %d\n", currentInversion->currentUtility);
+            printf("Costo de la inversion: %d\n", currentInversion->cost);
+            printf("Utilidad de la inversion: %d\n", currentInversion->utility);
+            pressToContinue();
+
+        #endif
+    }
 }
 
 int canInvest(int currentCost, int currentCapital)

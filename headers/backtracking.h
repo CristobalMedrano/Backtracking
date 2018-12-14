@@ -15,7 +15,7 @@ invHistory* getBestInversions(inv* currentInversion);
 invHistory* createInvHistory();
 
 btree* backtracking(btree* currentInversion, int cost, int utility, int capital, int level, int maxLevel, invHistory** solution);
-void printCurrent();
+void printCurrent(btree* currentInversion);
 
 int canInvest(int currentCost, int currentCapital);
 invHistory* updateSolution(invHistory* solution, btree* currentInversion);

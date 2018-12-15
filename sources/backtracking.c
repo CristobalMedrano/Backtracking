@@ -70,7 +70,7 @@ void runBacktracking()
             if (NULL != solution->details) 
             {
                 #ifdef DEBUG
-                    printf("capital usado: %d, ut: %d\n", solution->utility, solution->capital);
+                    printf("capital usado: %d, ut: %d\n", solution->capital, solution->utility);
                     showList(solution->details, solution->length);
                 #endif
                 free(solution->details);
